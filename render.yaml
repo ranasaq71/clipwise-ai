@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: clipwise
+    runtime: docker
+    dockerfilePath: ./clipwise/Dockerfile.preview
+    dockerContext: ./clipwise
+    plan: free
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: SEED_DEMO
+        value: "true"
+      - key: RUN_JOBS_INLINE
+        value: "true"
+      - key: STORAGE_BACKEND
+        value: local
+      - key: EMAIL_PROVIDER
+        value: none
+      - key: TWELVELABS_API_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MONGO_URL
+        sync: false
