@@ -1,0 +1,57 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    env_file: ./backend/.env
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      REDIS_URL: redis://redis:6379/0
+      WORK_DIR: /data/work
+      LOCAL_STORAGE_DIR: /data/storage
+    depends_on: [mongo, redis]
+    ports:
+      - "8000:8000"
+    volumes:
+      - media_data:/data
+
+  worker:
+    build: ./backend
+    restart: unless-stopped
+    command: celery -A celery_worker.celery_app worker --loglevel=info --concurrency=2
+    env_file: ./backend/.env
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      REDIS_URL: redis://redis:6379/0
+      WORK_DIR: /data/work
+      LOCAL_STORAGE_DIR: /data/storage
+    depends_on: [mongo, redis]
+    volumes:
+      - media_data:/data
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_BACKEND_URL: http://localhost:8000
+    restart: unless-stopped
+    depends_on: [api]
+    ports:
+      - "3000:80"
+
+volumes:
+  mongo_data:
+  media_data:

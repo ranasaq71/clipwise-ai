@@ -1,0 +1,2 @@
+/* ClipWise — minimal app-level overrides */
+.App { min-height: 100vh; background: #050505; color: #F5F5F7; }

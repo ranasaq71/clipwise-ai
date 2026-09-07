@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* ClipWise — Jewel & Luxury cinematic dark */
+        --background: 240 4% 4%;          /* #050505 base */
+        --foreground: 240 7% 96%;         /* #F5F5F7 */
+        --card: 240 9% 7%;                /* #0E0E12 */
+        --card-foreground: 240 7% 96%;
+        --popover: 240 9% 7%;
+        --popover-foreground: 240 7% 96%;
+        --primary: 41 100% 50%;           /* Studio Gold #FFB000 */
+        --primary-foreground: 240 4% 4%;
+        --secondary: 232 14% 28%;         /* #3E4154 */
+        --secondary-foreground: 240 7% 96%;
+        --muted: 240 9% 12%;
+        --muted-foreground: 240 7% 60%;   /* #8F8F9D */
+        --accent: 161 100% 47%;           /* Neon Sage #00F298 */
+        --accent-foreground: 240 4% 4%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 240 7% 96%;
+        --border: 240 7% 14%;
+        --input: 240 7% 14%;
+        --ring: 41 100% 50%;
+        --radius: 0.5rem;
+    }
+}
+
+html, body, #root {
+    background-color: #050505;
+    color: #F5F5F7;
+}
+
+body {
+    margin: 0;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "cv11";
+}
+
+.font-heading { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
+.font-body { font-family: 'Manrope', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Film grain overlay */
+.grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #0E0E12; }
+::-webkit-scrollbar-thumb { background: #1A1A24; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #2A2A35; }
+
+/* Selection */
+::selection { background: #FFB000; color: #050505; }
+
+/* Glow utility */
+.glow-gold { box-shadow: 0 0 30px rgba(255, 176, 0, 0.25); }
+.glow-sage { box-shadow: 0 0 30px rgba(0, 242, 152, 0.3); }
+.glow-gold-strong { box-shadow: 0 0 60px rgba(255, 176, 0, 0.45); }
+
+/* Subtle gradient text */
+.text-gradient-gold {
+    background: linear-gradient(180deg, #FFF6DC 0%, #FFB000 60%, #B27800 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Animated marquee shimmer */
+@keyframes shimmer-x {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+.shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,176,0,0.12) 50%, transparent 100%);
+    animation: shimmer-x 2.2s infinite;
+}
+
+/* Confidence ring conic */
+.conic-ring {
+    background: conic-gradient(var(--conic-color, #FFB000) calc(var(--pct, 0) * 1%), rgba(255,255,255,0.08) 0);
+}
+
+/* Pulse */
+@keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,176,0,0.45); }
+    50%      { box-shadow: 0 0 0 12px rgba(255,176,0,0); }
+}
+.pulse-gold { animation: pulse-gold 2.4s infinite; }
+
+/* Fade up entrance */
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up 0.6s ease-out both; }
+
+/* Border-radius utility for cinematic cards */
+.card-soft { background: #0E0E12; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; }
+.card-glass { background: rgba(14,14,18,0.6); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; }
+
+@layer base {
+    * { @apply border-border; }
+    body { @apply bg-background text-foreground; }
+}
